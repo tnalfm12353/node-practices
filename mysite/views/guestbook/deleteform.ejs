@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>mysite</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link href="/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="container">
+		<%-include("../includes/header") %>
+		<div id="content">
+			<% if(locals.result && locals.result === "fail") { %>
+				<div style="text-align: center; font-weight: bold; font-size: 1.5rem; color: #ff000070">
+					<p >정확한 비밀번호를 입력해주세요.</p>
+				</div>
+			<%} %>
+			<div id="guestbook" class="delete-form">
+				<form method="post" action="/guestbook/delete">
+					<input type='hidden' name="id" value="<%=id %>">
+					<label>비밀번호</label>
+					<input type="password" name="password">
+					<input type="submit" value="확인">
+				</form>
+				<a href="/guestbook">방명록 리스트</a>
+			</div>
+		</div>
+		<%-include("../includes/navigation") %>
+		<%-include("../includes/footer") %>
+	</div>
+</body>
+</html>
