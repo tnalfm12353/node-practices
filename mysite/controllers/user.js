@@ -66,29 +66,40 @@ module.exports = {
     },
 
     _update: async (req, res) =>{
-        if(req.body.name && req.body.gender && req.body.password) {
-            await models.User.update({
-                name: req.body.name,
-                password: req.body.password,
-                gender: req.body.gender
-            },
-            { 
-                where:{
-                    id: req.session.authUser.id
-                }
-            });
+        // if(req.body.name && req.body.gender && req.body.password) {
+        //     await models.User.update({
+        //         name: req.body.name,
+        //         password: req.body.password,
+        //         gender: req.body.gender
+        //     },
+        //     { 
+        //         where:{
+        //             id: req.session.authUser.id
+        //         }
+        //     });
 
-        } else if (req.body.name && req.body.gender){
-            await models.User.update({
-                name: req.body.name,
-                gender: req.body.gender
-            },
-            { 
-                where:{
-                    id: req.session.authUser.id
-                }
-            });
+        // } else if (req.body.name && req.body.gender){
+        //     await models.User.update({
+        //         name: req.body.name,
+        //         gender: req.body.gender
+        //     },
+        //     { 
+        //         where:{
+        //             id: req.session.authUser.id
+        //         }
+        //     });
+        // }
+
+        const updateObject = Object.assign(req.body);
+        if(updateObject['password'] == ''){
+            delete updateObject['password'];
         }
+
+        await models.User.update(updateObject,{
+            where:{
+                id: req.session.authUser.id
+            }
+        })
         
         res.redirect("/");
     }
