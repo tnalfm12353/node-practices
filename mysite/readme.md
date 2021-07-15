@@ -8,6 +8,9 @@
 > `$` npm i dotenv (config)  
 > `$` npm i sequlize  
 > `$` npm i mysql2  
+> `$` npm i moment  (dateformat)
+> `$` npm i winston  (zip??)
+> `$` npm i winston-daily-rotate-file  
 > `$` npm i -D nodemon
 
 ## scripts in package.json
@@ -33,6 +36,8 @@ JSON
     |--- package-lock.json
     |--- /node-modules
     |--- /config
+    |--- /logging
+    |--- /logs
     |--- /public
     |--- /routes
     |--- /controllers

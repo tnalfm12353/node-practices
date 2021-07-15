@@ -12,8 +12,11 @@ const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
 
+//Logging
+const logger = require("./logging");
+
 const application = express()
-                            .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_PUBLIC)))
+                            .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
                             // session environment
                             .use(session({
                                 secret: 'peachong',         // 쿠키 변조를 방지하기 위한 값.
@@ -39,7 +42,7 @@ const application = express()
 // Server Setup
 http.createServer(application)
     .on('listening', function() {
-        console.info(`Http Server Running on Port ${process.env.PORT}`);
+        logger.info(`Http Server Running on Port ${process.env.PORT}`);
     })
     .on('error', function(error) {
         if(error.syscall !== 'listen') {
@@ -47,11 +50,11 @@ http.createServer(application)
         }
         switch(error.code) {
             case 'EACCESS' : 
-                console.error(`Port: ${process.env.PORT} requires privileges`);
+                logger.error(`Port: ${process.env.PORT} requires privileges`);
                 process.exit(1);
                 break;
             case 'EADDRINUSE' :
-                console.error(`Port: ${process.env.PORT} is already in use`);
+                logger.error(`Port: ${process.env.PORT} is already in use`);
                 process.exit(1);
                 break;
             default:
