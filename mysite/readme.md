@@ -11,6 +11,7 @@
 > `$` npm i moment  (dateformat)
 > `$` npm i winston  (zip??)
 > `$` npm i winston-daily-rotate-file  
+> `$` npm i multer   (file uploader)  
 > `$` npm i -D nodemon
 
 ## scripts in package.json
@@ -38,7 +39,11 @@ JSON
     |--- /config
     |--- /logging
     |--- /logs
+    |--- /multer-temporary-store
     |--- /public
+    |       |--- /assets
+    |               |--- gallery
+    |
     |--- /routes
     |--- /controllers
     |--- /models

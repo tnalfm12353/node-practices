@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
 );
 const User = require("./User")(sequelize);
 const Guestbook = require("./Guestbook")(sequelize);
-
+const Gallery = require("./Gallery")(sequelize);
 User.sync({
     force: process.env.TABLE_CREATE_ALWAYS === 'true',
     alter: process.env.TABLE_ALTER_SYNC === 'true'
@@ -20,4 +20,9 @@ Guestbook.sync({
     alter: process.env.TABLE_ALTER_SYNC === 'true'
 });
 
-module.exports = { User, Guestbook }
+Gallery.sync({
+    force: process.env.TABLE_CREATE_ALWAYS === 'true',
+    alter: process.env.TABLE_ALTER_SYNC === 'true'
+});
+
+module.exports = { User, Guestbook, Gallery }

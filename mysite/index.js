@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const http = require('http');
+const multer = require('multer');
 const path = require('path');
 const dotenv = require("dotenv");
 
@@ -11,12 +12,17 @@ dotenv.config({ path: path.join(__dirname, 'config/db.env') });
 const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
+const galleryRouter = require('./routes/gallery');
+const errorRouter = require('./routes/error');
+
+const userApiRouter = require('./routes/user-api');
+const guestbookApiRouter = require('./routes/guestbook-api');
+
 
 //Logging
 const logger = require("./logging");
 
 const application = express()
-                            .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
                             // session environment
                             .use(session({
                                 secret: 'peachong',         // 쿠키 변조를 방지하기 위한 값.
@@ -25,6 +31,11 @@ const application = express()
                             }))
                             .use(express.urlencoded({extended: true})) 
                             .use(express.json())
+                            // multipart
+                            .use(multer({
+                                dest: path.join(__dirname, process.env.MULTER_TEMPORARY_STORE),
+                            }).single('file'))
+                            .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
                             .set("views",path.join(__dirname,"views"))
                             .set("view engine", "ejs")
                             .all("*", function(req, res, next) {
@@ -34,10 +45,12 @@ const application = express()
                             })
                             .use("/", mainRouter)
                             .use("/user", userRouter)
+                            .use("/api/user", userApiRouter)
                             .use("/guestbook", guestbookRouter)
-                            .use((req, res) => {
-                                res.render('error/404');
-                            });
+                            .use("/api/guestbook", guestbookApiRouter)
+                            .use("/gallery", galleryRouter)
+                            .use(errorRouter.error404)
+                            .use(errorRouter.error500);
 
 // Server Setup
 http.createServer(application)

@@ -5,15 +5,20 @@ module.exports = {
         res.render("user/joinform");
     },
 
-    _join : async (req,res) =>{
-        const result = await models.User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            gender: req.body.gender 
-        });
-        console.log(result);
-        res.redirect("/user/joinsuccess");
+    _join : async (req,res,next) =>{
+        try{
+
+            const result = await models.User.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                gender: req.body.gender 
+            });
+            console.log(result);
+            res.redirect("/user/joinsuccess");
+        } catch(error){
+            next(error);
+        }
     },
 
     joinsuccess: (req,res) =>{
@@ -65,7 +70,7 @@ module.exports = {
         })
     },
 
-    _update: async (req, res) =>{
+    _update: async (req, res, next) =>{
         // if(req.body.name && req.body.gender && req.body.password) {
         //     await models.User.update({
         //         name: req.body.name,
@@ -90,17 +95,22 @@ module.exports = {
         //     });
         // }
 
-        const updateObject = Object.assign(req.body);
-        if(updateObject['password'] == ''){
-            delete updateObject['password'];
-        }
+        try{
 
-        await models.User.update(updateObject,{
-            where:{
-                id: req.session.authUser.id
+            const updateObject = Object.assign(req.body);
+            if(updateObject['password'] == ''){
+                delete updateObject['password'];
             }
-        })
-        
-        res.redirect("/");
+            
+            await models.User.update(updateObject,{
+                where:{
+                    id: req.session.authUser.id
+                }
+            })
+            
+            res.redirect("/");
+        } catch(error) {
+            next(error);
+        }
     }
 }
