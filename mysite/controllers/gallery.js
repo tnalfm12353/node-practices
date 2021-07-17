@@ -1,5 +1,4 @@
-const fs = require("fs");
-const path = require("path");
+const fileupload = require("../libs/fileupload");
 const models = require("../models");
 
 module.exports = {
@@ -21,23 +20,10 @@ module.exports = {
     
     upload: async (req, res, next) =>{
         try{
-            const file = req.file;
-            console.log("upload-temp :" + file.path);
-
-            const storeDirectory = path.join(path.dirname(require.main.filename), process.env.STATIC_RESOURCES_DIRECTORY, process.env.GALLERY_STORE_LOCATION);
-            console.log("storeDir : " +storeDirectory);
-
-            const url = path.join(process.env.GALLERY_STORE_LOCATION, file.filename) + path.extname(file.originalname);
-            console.log("url : " + url);
-
-            const storePath = path.join( storeDirectory, file.filename ) + path.extname(file.originalname);
-
-            fs.existsSync(storeDirectory) || fs.mkdirSync(storeDirectory);
-            const content = fs.readFileSync(file.path);
-            fs.writeFileSync(storePath, content, {flag: "w+"});
+            const url = fileupload.uploadImage("gallery", req.file);
 
             await models.Gallery.create({
-                url: url.replace(/\\/gi, '/'),
+                url: url,
                 comment: req.body.comment || ""
             });
 

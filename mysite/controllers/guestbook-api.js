@@ -1,4 +1,4 @@
-const { Op,Sequelize } = require("sequelize");
+const { Op ,Sequelize } = require("sequelize");
 const models = require("../models");
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
                     [Sequelize.fn("date_format",Sequelize.col("reg_date"),"%Y-%m-%d %H:%i:%s"),"regDate"]
                 ],
                 // where: { // no pagination
-                //   id: (startId > 0) ? {[Op.lte] : startId} : {}
+                //   (startId > 0) ? {id: [Op.lte] : startId} : {}
                 // },
                 order:[["id","DESC"]],
                 // pagination

@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const http = require('http');
 const multer = require('multer');
+const auth = require("./routes/auth");
 const path = require('path');
 const dotenv = require("dotenv");
 
@@ -14,6 +15,7 @@ const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
 const galleryRouter = require('./routes/gallery');
 const errorRouter = require('./routes/error');
+const adminRouter = require('./routes/admin');
 
 const userApiRouter = require('./routes/user-api');
 const guestbookApiRouter = require('./routes/guestbook-api');
@@ -49,6 +51,7 @@ const application = express()
                             .use("/guestbook", guestbookRouter)
                             .use("/api/guestbook", guestbookApiRouter)
                             .use("/gallery", galleryRouter)
+                            .use("/admin", auth("ADMIN"),adminRouter)
                             .use(errorRouter.error404)
                             .use(errorRouter.error500);
 
